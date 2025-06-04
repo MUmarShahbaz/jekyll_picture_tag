@@ -13,7 +13,20 @@ jobs:
     steps:
 
       - name: Install system dependencies
-        run: sudo apt-get update && sudo apt-get install --yes libjpeg-dev webp libpng-dev libavif-dev libheif-dev libopenjpip7 imagemagick libvips-tools build-essential
+        run: sudo apt-get update && sudo apt-get install --yes libjpeg-dev webp libpng-dev libavif-dev libheif-dev libopenjpip7 libvips-tools build-essential
+
+      - name: Install ImageMagick 7 from source
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes build-essential pkg-config libjpeg-dev libpng-dev libtiff-dev libwebp-dev libheif-dev libavif-dev libopenjp2-7-dev
+          wget https://imagemagick.org/archive/ImageMagick.tar.gz
+          tar xvzf ImageMagick.tar.gz
+          cd ImageMagick-7*
+          ./configure
+          make
+          sudo make install
+          sudo ldconfig /usr/local/lib
+          magick --version
 
       - name: Checkout repo
         uses: actions/checkout@v4
